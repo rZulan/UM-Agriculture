@@ -1,1 +1,1 @@
-# UM Agriculture - Copy
+# UM Agriculture
