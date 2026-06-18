@@ -17,7 +17,7 @@ namespace Infrastructure.Services
             _config = config;
         }
 
-        public string GenerateToken(int userId, string username, IEnumerable<string> roles)
+        public string GenerateToken(int userId, string username, IEnumerable<string> roles, IEnumerable<string> permissions)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
 
@@ -33,6 +33,7 @@ namespace Infrastructure.Services
         };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            claims.AddRange(permissions.Select(permission => new Claim("permissions", permission)));
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],

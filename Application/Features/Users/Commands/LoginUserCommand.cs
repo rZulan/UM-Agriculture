@@ -51,7 +51,15 @@ namespace Application.Features.Users.Commands
                 .Select(ur => ur.Role!.Name)
                 .ToArray() ?? [];
 
-            var token = _jwtService.GenerateToken(existingUser.Id, existingUser.Username, roles);
+            var permissions = existingUser.UserRoles?
+                .Where(ur => ur.Role != null)
+                .SelectMany(ur => ur.Role!.RolePermissions)
+                .Where(rp => rp.Permission != null)
+                .Select(rp => rp.Permission!.Name)
+                .Distinct()
+                .ToArray() ?? [];
+
+            var token = _jwtService.GenerateToken(existingUser.Id, existingUser.Username, roles, permissions);
             var refreshTokenValue = _jwtService.GenerateRefreshToken();
 
             var refreshToken = new RefreshToken

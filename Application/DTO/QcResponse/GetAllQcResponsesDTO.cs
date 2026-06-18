@@ -2,6 +2,6 @@
 {
     public class GetAllQcResponsesDTO
     {
-        public List<GetDispatchQcResponseDTO> dispatchQcResponses { get; set; } = [];
+        public List<GetDispatchQcResponseDTO> DispatchQcResponses { get; set; } = [];
     }
 }
