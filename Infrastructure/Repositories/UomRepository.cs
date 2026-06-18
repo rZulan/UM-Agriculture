@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class UomRepository : IUomRepository
+    public class UomRepository(AppDbContext context) : IUomRepository
     {
-        private readonly AppDbContext _context;
-
-        public UomRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<Uom>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {

@@ -8,14 +8,9 @@ using MediatR;
 namespace Application.Features.Dispatches.Queries
 {
     public record GetDispatchesForQcQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetDispatchDTO>>>;
-    public class GetDispatchesForQcQueryHandler : IRequestHandler<GetDispatchesForQcQuery, GetAllResult<List<GetDispatchDTO>>>
+    public class GetDispatchesForQcQueryHandler(IDispatchRepository dispatchRepository) : IRequestHandler<GetDispatchesForQcQuery, GetAllResult<List<GetDispatchDTO>>>
     {
-        private readonly IDispatchRepository _dispatchRepository;
-
-        public GetDispatchesForQcQueryHandler(IDispatchRepository dispatchRepository)
-        {
-            _dispatchRepository = dispatchRepository;
-        }
+        private readonly IDispatchRepository _dispatchRepository = dispatchRepository;
 
         public async Task<GetAllResult<List<GetDispatchDTO>>> Handle(GetDispatchesForQcQuery request, CancellationToken cancellationToken)
         {
@@ -48,7 +43,7 @@ namespace Application.Features.Dispatches.Queries
 
             var sortInfo = new SortInfo
             {
-                SortColumns = new List<string> { "id", "batchNumber" },
+                SortColumns = ["id", "batchNumber"],
                 CurrentSort = request.Sort != null ? new CurrentSort
                 {
                     Column = request.Sort.SortBy,

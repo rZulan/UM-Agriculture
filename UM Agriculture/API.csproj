@@ -21,4 +21,12 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\analuz\source\repos\UM Agriculture\UM Agriculture\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\analuz\source\repos\UM Agriculture\UM Agriculture\.editorconfig" />
+  </ItemGroup>
+
 </Project>

@@ -7,14 +7,10 @@ using System.Net;
 namespace Application.Features.Users.Queries
 {
     public record GetUserByIdQuery(int Id) : IRequest<Result<GetUserDTO>>;
-    public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<GetUserDTO>>
+    public class GetUserByIdQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUserByIdQuery, Result<GetUserDTO>>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository = userRepository;
 
-        public GetUserByIdQueryHandler(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
         public async Task<Result<GetUserDTO>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
@@ -36,10 +32,9 @@ namespace Application.Features.Users.Queries
                 IDPrefix = user.IDPrefix,
                 IDNumber = user.IDNumber,
                 Role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "N/A",
-                Permissions = user.UserRoles
+                Permissions = [.. user.UserRoles
                     .SelectMany(x => x.Role!.RolePermissions.Select(rp => rp.Permission!.Name))
-                    .Distinct()
-                    .ToList()
+                    .Distinct()]
             };
 
             return Result<GetUserDTO>.Success(userDto);

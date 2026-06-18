@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class QcCategoryRepository : IQcCategoryRepository
+    public class QcCategoryRepository(AppDbContext context) : IQcCategoryRepository
     {
-        private readonly AppDbContext _context;
-
-        public QcCategoryRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<QcCategory>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {

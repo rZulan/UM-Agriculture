@@ -22,4 +22,17 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\analuz\source\repos\UM Agriculture\Infrastructure\Migrations\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\analuz\source\repos\UM Agriculture\Infrastructure\.editorconfig" />
+    <None Include="C:\Users\analuz\source\repos\UM Agriculture\Infrastructure\Migrations\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\analuz\source\repos\UM Agriculture\Infrastructure\.editorconfig" />
+  </ItemGroup>
+
 </Project>

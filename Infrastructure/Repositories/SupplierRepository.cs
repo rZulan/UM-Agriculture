@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class SupplierRepository : ISupplierRepository
+    public class SupplierRepository(AppDbContext context) : ISupplierRepository
     {
-        private readonly AppDbContext _context;
-
-        public SupplierRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<Supplier>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {

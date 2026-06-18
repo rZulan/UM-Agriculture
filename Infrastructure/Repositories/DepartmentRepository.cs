@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository(AppDbContext context) : IDepartmentRepository
     {
-        private readonly AppDbContext _context;
-
-        public DepartmentRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<Department>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {

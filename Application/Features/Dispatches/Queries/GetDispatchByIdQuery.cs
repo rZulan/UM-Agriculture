@@ -7,14 +7,9 @@ using System.Net;
 namespace Application.Features.Dispatches.Queries
 {
     public record GetDispatchByIdQuery(int Id) : IRequest<Result<GetDispatchDTO>>;
-    public class GetDispatchByIdQueryHandler : IRequestHandler<GetDispatchByIdQuery, Result<GetDispatchDTO>>
+    public class GetDispatchByIdQueryHandler(IDispatchRepository dispatchRepository) : IRequestHandler<GetDispatchByIdQuery, Result<GetDispatchDTO>>
     {
-        private readonly IDispatchRepository _dispatchRepository;
-
-        public GetDispatchByIdQueryHandler(IDispatchRepository dispatchRepository)
-        {
-            _dispatchRepository = dispatchRepository;
-        }
+        private readonly IDispatchRepository _dispatchRepository = dispatchRepository;
 
         public async Task<Result<GetDispatchDTO>> Handle(GetDispatchByIdQuery request, CancellationToken cancellationToken)
         {

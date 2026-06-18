@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class RefreshTokenRepository : IRefreshTokenRepository
+    public class RefreshTokenRepository(AppDbContext context) : IRefreshTokenRepository
     {
-        private readonly AppDbContext _context;
-
-        public RefreshTokenRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
         {

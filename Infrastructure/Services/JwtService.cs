@@ -8,14 +8,9 @@ using System.Text;
 
 namespace Infrastructure.Services
 {
-    public class JwtService : IJwtService
+    public class JwtService(IConfiguration config) : IJwtService
     {
-        private readonly IConfiguration _config;
-
-        public JwtService(IConfiguration config)
-        {
-            _config = config;
-        }
+        private readonly IConfiguration _config = config;
 
         public string GenerateToken(int userId, string username, IEnumerable<string> roles, IEnumerable<string> permissions)
         {
@@ -28,8 +23,8 @@ namespace Infrastructure.Services
 
             var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-            new Claim(ClaimTypes.Name, username)
+            new(ClaimTypes.NameIdentifier, userId.ToString()),
+            new(ClaimTypes.Name, username)
         };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

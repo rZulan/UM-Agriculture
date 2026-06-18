@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class PermissionRepository : IPermissionRepository
+    public class PermissionRepository(AppDbContext context) : IPermissionRepository
     {
-        private readonly AppDbContext _context;
-
-        public PermissionRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<Permission>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {

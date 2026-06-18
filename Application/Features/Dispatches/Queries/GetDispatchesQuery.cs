@@ -8,14 +8,9 @@ using MediatR;
 namespace Application.Features.Dispatches.Queries
 {
     public record GetDispatchesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetDispatchDTO>>>;
-    public class GetDispatchesQueryHandler : IRequestHandler<GetDispatchesQuery, GetAllResult<List<GetDispatchDTO>>>
+    public class GetDispatchesQueryHandler(IDispatchRepository dispatchRepository) : IRequestHandler<GetDispatchesQuery, GetAllResult<List<GetDispatchDTO>>>
     {
-        private readonly IDispatchRepository _dispatchRepository;
-
-        public GetDispatchesQueryHandler(IDispatchRepository dispatchRepository)
-        {
-            _dispatchRepository = dispatchRepository;
-        }
+        private readonly IDispatchRepository _dispatchRepository = dispatchRepository;
 
         public async Task<GetAllResult<List<GetDispatchDTO>>> Handle(GetDispatchesQuery request, CancellationToken cancellationToken)
         {

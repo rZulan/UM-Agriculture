@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class PendingAccountRepository : IPendingAccountRepository
+    public class PendingAccountRepository(AppDbContext context) : IPendingAccountRepository
     {
-        private readonly AppDbContext _context;
-
-        public PendingAccountRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<PendingAccount>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {

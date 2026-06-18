@@ -8,14 +8,9 @@ using MediatR;
 namespace Application.Features.Users.Queries
 {
     public record GetUsersQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetUserDTO>>>;
-    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, GetAllResult<List<GetUserDTO>>>
+    public class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUsersQuery, GetAllResult<List<GetUserDTO>>>
     {
-        private readonly IUserRepository _userRepository;
-
-        public GetUsersQueryHandler(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
+        private readonly IUserRepository _userRepository = userRepository;
 
         public async Task<GetAllResult<List<GetUserDTO>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {

@@ -7,14 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class ProductCategoryRepository : IProductCategoryRepository
+    public class ProductCategoryRepository(AppDbContext context) : IProductCategoryRepository
     {
-        private readonly AppDbContext _context;
-
-        public ProductCategoryRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         public async Task<List<ProductCategory>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {
