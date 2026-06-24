@@ -281,13 +281,13 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<QcForm>()
                 .HasOne(f => f.QcCategory)
-                .WithMany()
+                .WithMany(c => c.QcForms)
                 .HasForeignKey(f => f.QcCategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<QcForm>()
                 .HasOne(f => f.QcType)
-                .WithMany()
+                .WithMany(t => t.QcForms)
                 .HasForeignKey(f => f.QcTypeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
