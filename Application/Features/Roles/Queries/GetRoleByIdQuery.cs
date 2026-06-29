@@ -7,6 +7,8 @@ using System.Net;
 
 namespace Application.Features.Roles.Queries
 {
+    /// <summary>Query to retrieve a single role by its ID, including its assigned permissions.</summary>
+    /// <param name="Id">The unique identifier of the role to retrieve.</param>
     public record GetRoleByIdQuery(int Id) : IRequest<Result<GetRoleDTO>>;
     public class GetRoleByIdQueryHandler(IRoleRepository roleRepository) : IRequestHandler<GetRoleByIdQuery, Result<GetRoleDTO>>
     {

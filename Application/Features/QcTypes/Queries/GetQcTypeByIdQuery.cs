@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.QcTypes.Queries
 {
+    /// <summary>Query to retrieve a single QC type by its ID.</summary>
+    /// <param name="Id">The unique identifier of the QC type to retrieve.</param>
     public record GetQcTypeByIdQuery(int Id) : IRequest<Result<GetQcTypeDTO>>;
     public class GetQcTypeByIdQueryHandler(IQcTypeRepository qcTypeRepository) : IRequestHandler<GetQcTypeByIdQuery, Result<GetQcTypeDTO>>
     {

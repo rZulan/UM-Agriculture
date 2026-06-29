@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Users.Commands
 {
+    /// <summary>Command to authenticate a user and issue a JWT access token and refresh token.</summary>
+    /// <param name="LoginDTO">The login credentials (username and password).</param>
+    /// <param name="RefreshToken">An existing refresh token to revoke on re-login, or <see langword="null"/> if none.</param>
     public record LoginUserCommand(LoginUserDTO LoginDTO, string? RefreshToken) : IRequest<Result<LoginResultDTO>>;
     public class LoginUserCommandHandler(IUserRepository userRepository, IPasswordHasherService passwordHasherService, IJwtService jwtService, IRefreshTokenRepository refreshTokenRepository) : IRequestHandler<LoginUserCommand, Result<LoginResultDTO>>
     {

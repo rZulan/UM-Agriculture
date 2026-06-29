@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.QcResponses.Commands
 {
+    /// <summary>Command to submit a new QC response for a dispatch.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddQcResponseDTO">The QC response data to be created.</param>
     public record AddQcResponseCommand(int? UserId, AddQcResponseDTO AddQcResponseDTO) : IRequest<Result<object>>;
     public class AddQcResponseCommandHandler(IQcResponseRepository qcResponseRepository, IQcAnswerRepository qcAnswerRepository, IUserRepository userRepository, IDispatchRepository dispatchRepository) : IRequestHandler<AddQcResponseCommand, Result<object>>
     {
@@ -17,7 +20,12 @@ namespace Application.Features.QcResponses.Commands
 
         public async Task<Result<object>> Handle(AddQcResponseCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

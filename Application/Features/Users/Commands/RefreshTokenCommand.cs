@@ -7,6 +7,8 @@ using System.Net;
 
 namespace Application.Features.Users.Commands
 {
+    /// <summary>Command to issue a new JWT access token using a valid refresh token.</summary>
+    /// <param name="RefreshToken">The refresh token string to validate and exchange.</param>
     public record RefreshTokenCommand(string RefreshToken) : IRequest<Result<LoginResultDTO>>;
 
     public class RefreshTokenCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUserRepository userRepository, IJwtService jwtService) : IRequestHandler<RefreshTokenCommand, Result<LoginResultDTO>>

@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.QcCategories.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of QC categories.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetQcCategoriesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetQcCategoryDTO>>>;
     public class GetQcCategoriesQueryHandler(IQcCategoryRepository qcCategoryRepository) : IRequestHandler<GetQcCategoriesQuery, GetAllResult<List<GetQcCategoryDTO>>>
     {

@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Departments.Commands
 {
+    /// <summary>Command to create a new department.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddDepartmentDTO">The department data to be created.</param>
     public record AddDepartmentCommand(int? UserId, AddDepartmentDTO AddDepartmentDTO) : IRequest<Result<object>>;
     public class AddDepartmentCommandHandler(IDepartmentRepository departmentRepository, IUserRepository userRepository) : IRequestHandler<AddDepartmentCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.Departments.Commands
 
         public async Task<Result<object>> Handle(AddDepartmentCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

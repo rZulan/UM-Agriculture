@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.QcCategories.Queries
 {
+    /// <summary>Query to retrieve a single QC category by its ID.</summary>
+    /// <param name="Id">The unique identifier of the QC category to retrieve.</param>
     public record GetQcCategoryByIdQuery(int Id) : IRequest<Result<GetQcCategoryDTO>>;
     public class GetQcCategoryByIdQueryHandler(IQcCategoryRepository qcCategoryRepository) : IRequestHandler<GetQcCategoryByIdQuery, Result<GetQcCategoryDTO>>
     {

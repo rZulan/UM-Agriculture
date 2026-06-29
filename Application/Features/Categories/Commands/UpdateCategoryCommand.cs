@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.Categories.Commands
 {
+    /// <summary>Command to update an existing category.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the category to update.</param>
+    /// <param name="UpdateCategoryDTO">The updated category data.</param>
     public record UpdateCategoryCommand(int? UserId, int Id, UpdateCategoryDTO UpdateCategoryDTO) : IRequest<Result<object>>;
     public class UpdateCategoryCommandHandler(ICategoryRepository categoryRepository, IUserRepository userRepository) : IRequestHandler<UpdateCategoryCommand, Result<object>>
     {
@@ -14,7 +18,12 @@ namespace Application.Features.Categories.Commands
 
         public async Task<Result<object>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

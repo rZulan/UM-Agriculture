@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.Ponds.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of ponds.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetPondsQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetPondDTO>>>;
     public class GetPondsQueryHandler(IPondRepository pondRepository) : IRequestHandler<GetPondsQuery, GetAllResult<List<GetPondDTO>>>
     {

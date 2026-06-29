@@ -5,6 +5,10 @@ using System.Net;
 
 namespace Application.Features.Dispatches.Commands
 {
+    /// <summary>Command to activate or deactivate a dispatch.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the dispatch to toggle.</param>
+    /// <param name="IsActive">The desired active state.</param>
     public record ToggleDispatchActiveCommand(int? UserId, int Id, bool IsActive) : IRequest<Result<object>>;
     public class ToggleDispatchActiveCommandHandler(IDispatchRepository dispatchRepository, IUserRepository userRepository) : IRequestHandler<ToggleDispatchActiveCommand, Result<object>>
     {
@@ -13,7 +17,12 @@ namespace Application.Features.Dispatches.Commands
 
         public async Task<Result<object>> Handle(ToggleDispatchActiveCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

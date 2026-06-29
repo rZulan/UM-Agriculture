@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Dispatches.Commands
 {
+    /// <summary>Command to create a new dispatch.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddDispatchDTO">The dispatch data to be created.</param>
     public record AddDispatchCommand(int? UserId, AddDispatchDTO AddDispatchDTO) : IRequest<Result<object>>;
     public class AddDispatchCommandHandler(IDispatchRepository dispatchRepository, IUserRepository userRepository) : IRequestHandler<AddDispatchCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.Dispatches.Commands
 
         public async Task<Result<object>> Handle(AddDispatchCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

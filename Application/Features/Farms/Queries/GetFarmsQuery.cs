@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.Farms.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of farms.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetFarmsQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetFarmDTO>>>;
     public class GetFarmsQueryHandler(IFarmRepository farmRepository) : IRequestHandler<GetFarmsQuery, GetAllResult<List<GetFarmDTO>>>
     {

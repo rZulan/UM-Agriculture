@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.QcQuestions.Commands
 {
+    /// <summary>Command to update an existing QC question.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the QC question to update.</param>
+    /// <param name="UpdateQcQuestionDTO">The updated QC question data.</param>
     public record UpdateQcQuestionCommand(int? UserId, int Id, UpdateQcQuestionDTO UpdateQcQuestionDTO) : IRequest<Result<object>>;
     public class UpdateQcQuestionCommandHandler(IQcQuestionRepository qcQuestionRepository, IQcSectionRepository qcSectionRepository, IQcAnswerTypeRepository qcAnswerTypeRepository, IUserRepository userRepository) : IRequestHandler<UpdateQcQuestionCommand, Result<object>>
     {
@@ -16,7 +20,12 @@ namespace Application.Features.QcQuestions.Commands
 
         public async Task<Result<object>> Handle(UpdateQcQuestionCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

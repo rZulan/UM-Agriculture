@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.Permissions.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of permissions.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetPermissionsQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetPermissionDTO>>>;
     public class GetPermissionsQueryHandler(IPermissionRepository permissionRepository) : IRequestHandler<GetPermissionsQuery, GetAllResult<List<GetPermissionDTO>>>
     {

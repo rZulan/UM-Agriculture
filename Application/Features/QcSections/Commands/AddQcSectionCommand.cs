@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.QcSections.Commands
 {
+    /// <summary>Command to add a new section to a QC form.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddQcSectionDTO">The QC section data to be created.</param>
     public record AddQcSectionCommand(int? UserId, AddQcSectionDTO AddQcSectionDTO) : IRequest<Result<object>>;
     public class AddQcSectionCommandHandler(IQcSectionRepository qcSectionRepository, IUserRepository userRepository) : IRequestHandler<AddQcSectionCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.QcSections.Commands
 
         public async Task<Result<object>> Handle(AddQcSectionCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

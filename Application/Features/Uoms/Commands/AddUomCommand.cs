@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Uoms.Commands
 {
+    /// <summary>Command to create a new unit of measure.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddUomDTO">The unit of measure data to be created.</param>
     public record AddUomCommand(int? UserId, AddUomDTO AddUomDTO) : IRequest<Result<object>>;
     public class AddUomCommandHandler(IUomRepository uomRepository, IUserRepository userRepository) : IRequestHandler<AddUomCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.Uoms.Commands
 
         public async Task<Result<object>> Handle(AddUomCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

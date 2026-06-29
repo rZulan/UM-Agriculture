@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.PendingAccounts.Queries
 {
+    /// <summary>Query to retrieve a single pending account by its ID.</summary>
+    /// <param name="Id">The unique identifier of the pending account to retrieve.</param>
     public record GetPendingAccountByIdQuery(int Id) : IRequest<Result<GetPendingAccountDTO>>;
     public class GetPendingAccountByIdQueryHandler(IPendingAccountRepository pendingAccountRepository) : IRequestHandler<GetPendingAccountByIdQuery, Result<GetPendingAccountDTO>>
     {

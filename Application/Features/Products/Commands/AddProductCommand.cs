@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Products.Commands
 {
+    /// <summary>Command to create a new product.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddProductDTO">The product data to be created.</param>
     public record AddProductCommand(int? UserId, AddProductDTO AddProductDTO) : IRequest<Result<object>>;
     public class AddProductCommandHandler(IProductRepository productRepository, IUserRepository userRepository) : IRequestHandler<AddProductCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.Products.Commands
 
         public async Task<Result<object>> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

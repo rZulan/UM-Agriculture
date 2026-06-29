@@ -8,6 +8,9 @@ using MediatR;
 
 namespace Application.Features.Roles.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of roles.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetRolesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetRoleDTO>>>;
     public class GetRolesQueryHandler(IRoleRepository roleRepository) : IRequestHandler<GetRolesQuery, GetAllResult<List<GetRoleDTO>>>
     {

@@ -13,7 +13,11 @@ namespace Infrastructure.Repositories
 
         public async Task<List<QcForm>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken)
         {
-            IQueryable<QcForm> query = _context.QcForms;
+            IQueryable<QcForm> query = _context.QcForms
+                .Include(x => x.QcSections)
+                    .ThenInclude(x => x.QcQuestions)
+                .Include(x => x.QcResponses)
+                    .ThenInclude(x => x.QcAnswers);
 
             if (genericFiltersDTO.IsActive != null)
             {
@@ -59,8 +63,17 @@ namespace Infrastructure.Repositories
         public async Task<QcForm?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _context.QcForms
+                .Include(x => x.QcSections)
+                    .ThenInclude(x => x.QcQuestions)
+                .Include(x => x.QcResponses)
+                    .ThenInclude(x => x.QcAnswers)
                 .Where(q => q.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task UpdateAsync(QcForm qcForm, CancellationToken cancellationToken)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

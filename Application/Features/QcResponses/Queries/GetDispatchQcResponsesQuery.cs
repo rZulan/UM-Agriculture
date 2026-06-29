@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.QcResponses.Queries
 {
+    /// <summary>Query to retrieve all QC responses associated with dispatches, with filters and sorting.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetDispatchQcResponsesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetDispatchQcResponseDTO>>>;
     public class GetDispatchQcResponsesQueryHandler(IQcResponseRepository qcResponseRepository) : IRequestHandler<GetDispatchQcResponsesQuery, GetAllResult<List<GetDispatchQcResponseDTO>>>
     {

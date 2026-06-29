@@ -5,6 +5,10 @@ using System.Net;
 
 namespace Application.Features.Customers.Commands
 {
+    /// <summary>Command to activate or deactivate a customer.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the customer to toggle.</param>
+    /// <param name="IsActive">The desired active state.</param>
     public record ToggleCustomerActiveCommand(int? UserId, int Id, bool IsActive) : IRequest<Result<object>>;
     public class ToggleCustomerActiveCommandHandler(ICustomerRepository customerRepository, IUserRepository userRepository) : IRequestHandler<ToggleCustomerActiveCommand, Result<object>>
     {
@@ -13,7 +17,12 @@ namespace Application.Features.Customers.Commands
 
         public async Task<Result<object>> Handle(ToggleCustomerActiveCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {
@@ -33,7 +42,7 @@ namespace Application.Features.Customers.Commands
             }
 
             if (!request.IsActive && !existingCustomer.IsActive)
-            {
+            {    
                 return Result<object>.Failure("Customer is already archived");
             }
 

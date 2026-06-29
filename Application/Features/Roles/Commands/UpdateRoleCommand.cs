@@ -7,6 +7,10 @@ using System.Net;
 
 namespace Application.Features.Roles.Commands
 {
+    /// <summary>Command to update an existing role and its assigned permissions.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the role to update.</param>
+    /// <param name="UpdateRoleDTO">The updated role data.</param>
     public record UpdateRoleCommand(int? UserId, int Id, UpdateRoleDTO UpdateRoleDTO) : IRequest<Result<object>>;
     public class UpdateRoleCommandHandler(IRoleRepository roleRepository, IUserRepository userRepository) : IRequestHandler<UpdateRoleCommand, Result<object>>
     {
@@ -15,7 +19,12 @@ namespace Application.Features.Roles.Commands
 
         public async Task<Result<object>> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

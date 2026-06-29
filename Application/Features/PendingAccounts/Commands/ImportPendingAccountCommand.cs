@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.PendingAccounts.Commands
 {
+    /// <summary>Command to import a pending account into the system as a registered user.</summary>
+    /// <param name="Id">The ID of the pending account to import.</param>
+    /// <param name="RoleId">The ID of the role to assign to the newly registered user.</param>
     public record ImportPendingAccountCommand(int Id, int RoleId) : IRequest<Result<object>>;
     public class ImportPendingAccountCommandHandler(IPendingAccountRepository pendingAccountRepository, IRoleRepository roleRepository, IMediator mediator) : IRequestHandler<ImportPendingAccountCommand, Result<object>>
     {

@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Suppliers.Queries
 {
+    /// <summary>Query to retrieve a single supplier by its ID.</summary>
+    /// <param name="Id">The unique identifier of the supplier to retrieve.</param>
     public record GetSupplierByIdQuery(int Id) : IRequest<Result<GetSupplierDTO>>;
     public class GetSupplierByIdQueryHandler(ISupplierRepository supplierRepository) : IRequestHandler<GetSupplierByIdQuery, Result<GetSupplierDTO>>
     {

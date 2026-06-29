@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.PendingAccounts.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of pending accounts.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetPendingAccountsQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetPendingAccountDTO>>>;
     public class GetPendingAccountsQueryHandler(IPendingAccountRepository pendingAccountRepository) : IRequestHandler<GetPendingAccountsQuery, GetAllResult<List<GetPendingAccountDTO>>>
     {

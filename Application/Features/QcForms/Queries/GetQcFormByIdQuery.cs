@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.QcForms.Queries
 {
+    /// <summary>Query to retrieve a single QC form by its ID.</summary>
+    /// <param name="Id">The unique identifier of the QC form to retrieve.</param>
     public record GetQcFormByIdQuery(int Id) : IRequest<Result<GetQcFormDTO>>;
     public class GetQcFormByIdQueryHandler(IQcFormRepository qcFormRepository) : IRequestHandler<GetQcFormByIdQuery, Result<GetQcFormDTO>>
     {

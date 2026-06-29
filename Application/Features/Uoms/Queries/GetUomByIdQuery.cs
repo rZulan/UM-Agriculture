@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Uoms.Queries
 {
+    /// <summary>Query to retrieve a single unit of measure by its ID.</summary>
+    /// <param name="Id">The unique identifier of the unit of measure to retrieve.</param>
     public record GetUomByIdQuery(int Id) : IRequest<Result<GetUomDTO>>;
     public class GetUomByIdQueryHandler(IUomRepository uomRepository) : IRequestHandler<GetUomByIdQuery, Result<GetUomDTO>>
     {

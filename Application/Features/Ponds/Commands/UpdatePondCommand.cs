@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.Ponds.Commands
 {
+    /// <summary>Command to update an existing pond.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the pond to update.</param>
+    /// <param name="UpdatePondDTO">The updated pond data.</param>
     public record UpdatePondCommand(int? UserId, int Id, UpdatePondDTO UpdatePondDTO) : IRequest<Result<object>>;
     public class UpdatePondCommandHandler(IPondRepository pondRepository, IUserRepository userRepository) : IRequestHandler<UpdatePondCommand, Result<object>>
     {
@@ -14,7 +18,12 @@ namespace Application.Features.Ponds.Commands
 
         public async Task<Result<object>> Handle(UpdatePondCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

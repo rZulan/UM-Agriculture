@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.HorticultureClasses.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of horticulture classes.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetHorticultureClassesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetHorticultureClassDTO>>>;
     public class GetHorticultureClassesQueryHandler(IHorticultureClassRepository horticultureClassRepository) : IRequestHandler<GetHorticultureClassesQuery, GetAllResult<List<GetHorticultureClassDTO>>>
     {

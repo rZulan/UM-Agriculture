@@ -5,6 +5,8 @@ using System.Net;
 
 namespace Application.Features.Users.Commands
 {
+    /// <summary>Command to log out a user by revoking their active refresh token.</summary>
+    /// <param name="RefreshToken">The refresh token string to revoke.</param>
     public record LogoutUserCommand(string RefreshToken) : IRequest<Result<object>>;
     public class LogoutUserCommandHandler(IRefreshTokenRepository refreshTokenRepository) : IRequestHandler<LogoutUserCommand, Result<object>>
     {

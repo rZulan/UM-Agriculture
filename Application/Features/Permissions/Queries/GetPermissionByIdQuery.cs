@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Permissions.Queries
 {
+    /// <summary>Query to retrieve a single permission by its ID.</summary>
+    /// <param name="Id">The unique identifier of the permission to retrieve.</param>
     public record GetPermissionByIdQuery(int Id) : IRequest<Result<GetPermissionDTO>>;
     public class GetPermissionByIdQueryHandler(IPermissionRepository permissionRepository) : IRequestHandler<GetPermissionByIdQuery, Result<GetPermissionDTO>>
     {

@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.Users.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of users.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetUsersQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetUserDTO>>>;
     public class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUsersQuery, GetAllResult<List<GetUserDTO>>>
     {

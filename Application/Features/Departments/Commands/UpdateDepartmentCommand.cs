@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.Departments.Commands
 {
+    /// <summary>Command to update an existing department.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the department to update.</param>
+    /// <param name="UpdateDepartmentDTO">The updated department data.</param>
     public record UpdateDepartmentCommand(int? UserId, int Id, UpdateDepartmentDTO UpdateDepartmentDTO) : IRequest<Result<object>>;
     public class UpdateDepartmentCommandHandler(IDepartmentRepository departmentRepository, IUserRepository userRepository) : IRequestHandler<UpdateDepartmentCommand, Result<object>>
     {
@@ -14,7 +18,12 @@ namespace Application.Features.Departments.Commands
 
         public async Task<Result<object>> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

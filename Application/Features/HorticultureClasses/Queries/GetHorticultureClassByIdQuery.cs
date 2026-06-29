@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.HorticultureClasses.Queries
 {
+    /// <summary>Query to retrieve a single horticulture class by its ID.</summary>
+    /// <param name="Id">The unique identifier of the horticulture class to retrieve.</param>
     public record GetHorticultureClassByIdQuery(int Id) : IRequest<Result<GetHorticultureClassDTO>>;
     public class GetHorticultureClassByIdQueryHandler(IHorticultureClassRepository horticultureClassRepository) : IRequestHandler<GetHorticultureClassByIdQuery, Result<GetHorticultureClassDTO>>
     {

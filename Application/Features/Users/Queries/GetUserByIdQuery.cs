@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Users.Queries
 {
+    /// <summary>Query to retrieve a single user by their ID.</summary>
+    /// <param name="Id">The unique identifier of the user to retrieve.</param>
     public record GetUserByIdQuery(int Id) : IRequest<Result<GetUserDTO>>;
     public class GetUserByIdQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUserByIdQuery, Result<GetUserDTO>>
     {

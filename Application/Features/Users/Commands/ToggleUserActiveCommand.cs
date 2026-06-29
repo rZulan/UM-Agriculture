@@ -4,6 +4,9 @@ using MediatR;
 
 namespace Application.Features.Users.Commands
 {
+    /// <summary>Command to activate or deactivate a user account.</summary>
+    /// <param name="Id">The ID of the user to toggle.</param>
+    /// <param name="Toggle">The desired active state.</param>
     public record ToggleUserActiveCommand(int Id, bool Toggle) : IRequest<Result<object>>;
     public class ToggleUserActiveCommandHandler(IUserRepository userRepository) : IRequestHandler<ToggleUserActiveCommand, Result<object>>
     {

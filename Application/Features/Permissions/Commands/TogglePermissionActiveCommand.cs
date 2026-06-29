@@ -5,6 +5,10 @@ using System.Net;
 
 namespace Application.Features.Permissions.Commands
 {
+    /// <summary>Command to activate or deactivate a permission.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the permission to toggle.</param>
+    /// <param name="IsActive">The desired active state.</param>
     public record TogglePermissionActiveCommand(int? UserId, int Id, bool IsActive) : IRequest<Result<object>>;
     public class TogglePermissionActiveCommandHandler(IPermissionRepository permissionRepository, IUserRepository userRepository) : IRequestHandler<TogglePermissionActiveCommand, Result<object>>
     {
@@ -13,7 +17,12 @@ namespace Application.Features.Permissions.Commands
 
         public async Task<Result<object>> Handle(TogglePermissionActiveCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

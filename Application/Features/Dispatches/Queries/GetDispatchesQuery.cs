@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.Dispatches.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of dispatches.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetDispatchesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetDispatchDTO>>>;
     public class GetDispatchesQueryHandler(IDispatchRepository dispatchRepository) : IRequestHandler<GetDispatchesQuery, GetAllResult<List<GetDispatchDTO>>>
     {

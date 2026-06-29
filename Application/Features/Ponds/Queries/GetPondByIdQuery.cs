@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Ponds.Queries
 {
+    /// <summary>Query to retrieve a single pond by its ID.</summary>
+    /// <param name="Id">The unique identifier of the pond to retrieve.</param>
     public record GetPondByIdQuery(int Id) : IRequest<Result<GetPondDTO>>;
     public class GetPondByIdQueryHandler(IPondRepository pondRepository) : IRequestHandler<GetPondByIdQuery, Result<GetPondDTO>>
     {

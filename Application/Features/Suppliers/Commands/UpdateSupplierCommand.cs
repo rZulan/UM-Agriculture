@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.Suppliers.Commands
 {
+    /// <summary>Command to update an existing supplier.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the supplier to update.</param>
+    /// <param name="UpdateSupplierDTO">The updated supplier data.</param>
     public record UpdateSupplierCommand(int? UserId, int Id, UpdateSupplierDTO UpdateSupplierDTO) : IRequest<Result<object>>;
     public class UpdateSupplierCommandHandler(ISupplierRepository supplierRepository, IUserRepository userRepository) : IRequestHandler<UpdateSupplierCommand, Result<object>>
     {
@@ -14,7 +18,12 @@ namespace Application.Features.Suppliers.Commands
 
         public async Task<Result<object>> Handle(UpdateSupplierCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.Uoms.Commands
 {
+    /// <summary>Command to update an existing unit of measure.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the unit of measure to update.</param>
+    /// <param name="UpdateUomDTO">The updated unit of measure data.</param>
     public record UpdateUomCommand(int? UserId, int Id, UpdateUomDTO UpdateUomDTO) : IRequest<Result<object>>;
     public class UpdateUomCommandHandler(IUomRepository uomRepository, IUserRepository userRepository) : IRequestHandler<UpdateUomCommand, Result<object>>
     {
@@ -14,7 +18,12 @@ namespace Application.Features.Uoms.Commands
 
         public async Task<Result<object>> Handle(UpdateUomCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

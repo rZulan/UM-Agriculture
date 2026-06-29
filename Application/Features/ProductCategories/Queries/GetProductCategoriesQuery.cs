@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.ProductCategories.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of product categories.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetProductCategoriesQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetProductCategoryDTO>>>;
     public class GetProductCategoriesQueryHandler(IProductCategoryRepository productCategoryRepository) : IRequestHandler<GetProductCategoriesQuery, GetAllResult<List<GetProductCategoryDTO>>>
     {

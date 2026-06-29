@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Categories.Queries
 {
+    /// <summary>Query to retrieve a single category by its ID.</summary>
+    /// <param name="Id">The unique identifier of the category to retrieve.</param>
     public record GetCategoryByIdQuery(int Id) : IRequest<Result<GetCategoryDTO>>;
     public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository) : IRequestHandler<GetCategoryByIdQuery, Result<GetCategoryDTO>>
     {

@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Dispatches.Queries
 {
+    /// <summary>Query to retrieve a single dispatch by its ID.</summary>
+    /// <param name="Id">The unique identifier of the dispatch to retrieve.</param>
     public record GetDispatchByIdQuery(int Id) : IRequest<Result<GetDispatchDTO>>;
     public class GetDispatchByIdQueryHandler(IDispatchRepository dispatchRepository) : IRequestHandler<GetDispatchByIdQuery, Result<GetDispatchDTO>>
     {

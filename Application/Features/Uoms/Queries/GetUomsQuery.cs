@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Application.Features.Uoms.Queries
 {
+    /// <summary>Query to retrieve a filtered, sorted, and paginated list of units of measure.</summary>
+    /// <param name="GenericFiltersDTO">Search and pagination filters.</param>
+    /// <param name="Sort">Sort direction and field.</param>
     public record GetUomsQuery(GenericFiltersDTO GenericFiltersDTO, Sort Sort) : IRequest<GetAllResult<List<GetUomDTO>>>;
     public class GetUomsQueryHandler(IUomRepository uomRepository) : IRequestHandler<GetUomsQuery, GetAllResult<List<GetUomDTO>>>
     {

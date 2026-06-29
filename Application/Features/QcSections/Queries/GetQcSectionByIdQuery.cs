@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.QcSections.Queries
 {
+    /// <summary>Query to retrieve a single QC section by its ID.</summary>
+    /// <param name="Id">The unique identifier of the QC section to retrieve.</param>
     public record GetQcSectionByIdQuery(int Id) : IRequest<Result<GetQcSectionDTO>>;
     public class GetQcSectionByIdQueryHandler(IQcSectionRepository qcSectionRepository) : IRequestHandler<GetQcSectionByIdQuery, Result<GetQcSectionDTO>>
     {

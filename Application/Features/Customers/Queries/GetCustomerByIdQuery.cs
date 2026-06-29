@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Customers.Queries
 {
+    /// <summary>Query to retrieve a single customer by its ID.</summary>
+    /// <param name="Id">The unique identifier of the customer to retrieve.</param>
     public record GetCustomerByIdQuery(int Id) : IRequest<Result<GetCustomerDTO>>;
     public class GetCustomerByIdQueryHandler(ICustomerRepository customerRepository) : IRequestHandler<GetCustomerByIdQuery, Result<GetCustomerDTO>>
     {

@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Permissions.Commands
 {
+    /// <summary>Command to create a new permission.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddPermissionDTO">The permission data to be created.</param>
     public record AddPermissionCommand(int? UserId, AddPermissionDTO AddPermissionDTO) : IRequest<Result<object>>;
     public class AddPermissionCommandHandler(IPermissionRepository permissionRepository, IUserRepository userRepository) : IRequestHandler<AddPermissionCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.Permissions.Commands
 
         public async Task<Result<object>> Handle(AddPermissionCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Departments.Queries
 {
+    /// <summary>Query to retrieve a single department by its ID.</summary>
+    /// <param name="Id">The unique identifier of the department to retrieve.</param>
     public record GetDepartmentByIdQuery(int Id) : IRequest<Result<GetDepartmentDTO>>;
     public class GetDepartmentByIdQueryHandler(IDepartmentRepository departmentRepository) : IRequestHandler<GetDepartmentByIdQuery, Result<GetDepartmentDTO>>
     {

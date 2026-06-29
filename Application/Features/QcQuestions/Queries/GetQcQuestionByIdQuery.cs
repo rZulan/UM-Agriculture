@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.QcQuestions.Queries
 {
+    /// <summary>Query to retrieve a single QC question by its ID.</summary>
+    /// <param name="Id">The unique identifier of the QC question to retrieve.</param>
     public record GetQcQuestionByIdQuery(int Id) : IRequest<Result<GetQcQuestionDTO>>;
     public class GetQcQuestionByIdQueryHandler(IQcQuestionRepository qcQuestionRepository) : IRequestHandler<GetQcQuestionByIdQuery, Result<GetQcQuestionDTO>>
     {

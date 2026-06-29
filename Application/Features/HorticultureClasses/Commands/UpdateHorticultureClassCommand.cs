@@ -6,6 +6,10 @@ using System.Net;
 
 namespace Application.Features.HorticultureClasses.Commands
 {
+    /// <summary>Command to update an existing horticulture class.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="Id">The ID of the horticulture class to update.</param>
+    /// <param name="UpdateHorticultureClassDTO">The updated horticulture class data.</param>
     public record UpdateHorticultureClassCommand(int? UserId, int Id, UpdateHorticultureClassDTO UpdateHorticultureClassDTO) : IRequest<Result<object>>;
     public class UpdateHorticultureClassCommandHandler(IHorticultureClassRepository horticultureClassRepository, IUserRepository userRepository) : IRequestHandler<UpdateHorticultureClassCommand, Result<object>>
     {
@@ -14,7 +18,12 @@ namespace Application.Features.HorticultureClasses.Commands
 
         public async Task<Result<object>> Handle(UpdateHorticultureClassCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

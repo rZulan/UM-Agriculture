@@ -7,6 +7,9 @@ using System.Net;
 
 namespace Application.Features.Ponds.Commands
 {
+    /// <summary>Command to create a new pond.</summary>
+    /// <param name="UserId">The ID of the authenticated user performing the action.</param>
+    /// <param name="AddPondDTO">The pond data to be created.</param>
     public record AddPondCommand(int? UserId, AddPondDTO AddPondDTO) : IRequest<Result<object>>;
     public class AddPondCommandHandler(IPondRepository pondRepository, IUserRepository userRepository) : IRequestHandler<AddPondCommand, Result<object>>
     {
@@ -15,7 +18,12 @@ namespace Application.Features.Ponds.Commands
 
         public async Task<Result<object>> Handle(AddPondCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await _userRepository.GetByIdAsync(request.UserId!.Value, cancellationToken);
+            if (request.UserId == null)
+            {
+                return Result<object>.Failure("User is not signed in", HttpStatusCode.Unauthorized);
+            }
+
+            var existingUser = await _userRepository.GetByIdAsync(request.UserId.Value, cancellationToken);
 
             if (existingUser == null)
             {

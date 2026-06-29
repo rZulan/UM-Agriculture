@@ -6,6 +6,8 @@ using System.Net;
 
 namespace Application.Features.Farms.Queries
 {
+    /// <summary>Query to retrieve a single farm by its ID.</summary>
+    /// <param name="Id">The unique identifier of the farm to retrieve.</param>
     public record GetFarmByIdQuery(int Id) : IRequest<Result<GetFarmDTO>>;
     public class GetFarmByIdQueryHandler(IFarmRepository farmRepository) : IRequestHandler<GetFarmByIdQuery, Result<GetFarmDTO>>
     {
