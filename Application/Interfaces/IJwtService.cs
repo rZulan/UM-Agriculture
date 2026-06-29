@@ -14,6 +14,7 @@
         /// <param name="permissions">The permissions granted to the user.</param>
         /// <returns>A signed JWT access token string.</returns>
         string GenerateToken(int userId, string username, IEnumerable<string> roles, IEnumerable<string> permissions);
+
         /// <summary>
         /// Generates a cryptographically random refresh token string.
         /// </summary>

@@ -14,10 +14,12 @@ namespace Application.Interfaces
         /// <param name="sort">Sort direction and field.</param>
         /// <param name="cancellationToken">Token to cancel the operation.</param>
         Task<List<QcCategory>> GetAllAsync(GenericFiltersDTO genericFiltersDTO, Sort sort, CancellationToken cancellationToken);
+
         /// <summary>Returns the total count of QC categories matching the given filters.</summary>
         /// <param name="genericFiltersDTO">Filters to apply before counting.</param>
         /// <param name="cancellationToken">Token to cancel the operation.</param>
         Task<int> GetCountAsync(GenericFiltersDTO genericFiltersDTO, CancellationToken cancellationToken);
+
         /// <summary>Returns a QC category by its ID, or <see langword="null"/> if not found.</summary>
         /// <param name="id">The QC category's unique identifier.</param>
         /// <param name="cancellationToken">Token to cancel the operation.</param>

@@ -11,6 +11,7 @@
         /// <param name="password">The plain-text password to hash.</param>
         /// <returns>The hashed representation of the password.</returns>
         string Hash(string password);
+
         /// <summary>
         /// Verifies a plain-text password against a stored hash.
         /// </summary>
